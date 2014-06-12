@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AzureBlobTokenCache1.cs" />
+    <Compile Include="AzureBlobTokenCache2.cs" />
+    <Compile Include="AzureBlobTokenCache3.cs" />
+    <Compile Include="AzureBlobTokenCache4.cs" />
     <Compile Include="CustomTokenCache2.cs" />
     <Compile Include="CustomTokenCache1.cs" />
     <Compile Include="CustomTokenCache3.cs" />
