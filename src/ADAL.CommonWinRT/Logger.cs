@@ -17,116 +17,35 @@
 //----------------------------------------------------------------------
 
 using System;
-using System.Diagnostics.Tracing;
 
 namespace Microsoft.IdentityModel.Clients.ActiveDirectory
 {
-    internal partial class Logger : IDisposable
+    internal partial class Logger
     {
-        private const string LogFilename = "AdalTraces.log";
-        private bool disposed;
-        private static readonly AdalEventSource AdalEventSource;
-        private static StorageFileEventListener adalListener;
 
         static Logger()
         {
-            AdalEventSource = new AdalEventSource();
         }
 
         internal static void SetListenerLevel(AdalTraceLevel level)
         {
-            if (level != AdalTraceLevel.None)
-            {
-                if (adalListener == null)
-                {
-                    adalListener = new StorageFileEventListener(LogFilename);
-                }
-
-                adalListener.EnableEvents(AdalEventSource, GetEventLevel(level));
-            }
-            else if (adalListener != null)
-            {
-                adalListener.DisableEvents(AdalEventSource);
-                adalListener.Dispose();
-                adalListener = null;
-            }
+           
         }
 
         internal static void Verbose(CallState callState, string format, params object[] args)
         {
-            AdalEventSource.Verbose(PrepareLogMessage(callState, format, args));
         }
 
         internal static void Information(CallState callState, string format, params object[] args)
         {
-            AdalEventSource.Information(PrepareLogMessage(callState, format, args));
         }
 
         internal static void Warning(CallState callState, string format, params object[] args)
         {
-            AdalEventSource.Warning(PrepareLogMessage(callState, format, args));
         }
 
         internal static void Error(CallState callState, string format, params object[] args)
         {
-            AdalEventSource.Error(PrepareLogMessage(callState, format, args));
-        }
-
-        private static EventLevel GetEventLevel(AdalTraceLevel level)
-        {
-            EventLevel returnLevel;
-            switch (level)
-            {
-                case AdalTraceLevel.Informational:
-                    returnLevel = EventLevel.Informational;
-                    break;
-                case AdalTraceLevel.Verbose:
-                    returnLevel = EventLevel.Verbose;
-                    break;
-                case AdalTraceLevel.Warning:
-                    returnLevel = EventLevel.Warning;
-                    break;
-                case AdalTraceLevel.Error:
-                    returnLevel = EventLevel.Error;
-                    break;
-                case AdalTraceLevel.Critical:
-                    returnLevel = EventLevel.Critical;
-                    break;
-                case AdalTraceLevel.LogAlways:
-                    returnLevel = EventLevel.LogAlways;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("level");
-            }
-            return returnLevel;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    if (adalListener != null)
-                    {
-                        adalListener.Dispose();
-                        adalListener = null;
-                    }
-
-                    if (AdalEventSource != null)
-                    {
-                        AdalEventSource.Dispose();
-                    }
-                }
-
-                disposed = true;
-            }
         }
     }
 }

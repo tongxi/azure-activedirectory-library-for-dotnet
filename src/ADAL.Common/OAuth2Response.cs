@@ -244,11 +244,18 @@ namespace Microsoft.IdentityModel.Clients.ActiveDirectory
                 tokenResponse = ((TokenResponse)serializer.ReadObject(responseStream));
 
                 // Reset stream position to make it possible for application to read WebException body again
-                responseStream.Position = 0;
+                if (responseStream.CanSeek)
+                {
+                    responseStream.Position = 0;
+                }
             }
             catch (SerializationException)
             {
-                responseStream.Position = 0;
+                if (responseStream.CanSeek)
+                {
+                    responseStream.Position = 0;
+                }
+
                 tokenResponse = new TokenResponse
                 {
                     Error = (((HttpWebResponse)response).StatusCode == HttpStatusCode.ServiceUnavailable) ? 

@@ -1,21 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BDFC3241-0B81-47E2-94C1-A2D54F066E48}</ProjectGuid>
-    <OutputType>winmdobj</OutputType>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.IdentityModel.Clients.ActiveDirectory</RootNamespace>
     <AssemblyName>Microsoft.IdentityModel.Clients.ActiveDirectory</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,7 +28,7 @@
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;ADAL_WINPHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <DocumentationFile>Microsoft.IdentityModel.Clients.ActiveDirectory.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -38,9 +41,6 @@
     <DocumentationFile>Microsoft.IdentityModel.Clients.ActiveDirectory.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\ADAL.CommonWinRT\AdalEventSource.cs">
-      <Link>CommonWinRT\AdalEventSource.cs</Link>
-    </Compile>
     <Compile Include="..\ADAL.CommonWinRT\AdalTrace.cs">
       <Link>CommonWinRT\AdalTrace.cs</Link>
     </Compile>
@@ -73,9 +73,6 @@
     </Compile>
     <Compile Include="..\ADAL.CommonWinRT\RequestParameters.cs">
       <Link>CommonWinRT\RequestParameters.cs</Link>
-    </Compile>
-    <Compile Include="..\ADAL.CommonWinRT\StorageFileEventListener.cs">
-      <Link>CommonWinRT\StorageFileEventListener.cs</Link>
     </Compile>
     <Compile Include="..\ADAL.CommonWinRT\TokenCache.cs">
       <Link>CommonWinRT\TokenCache.cs</Link>
@@ -223,6 +220,7 @@
     </Compile>
     <Compile Include="AcquireTokenInteractiveHandler.cs" />
     <Compile Include="AuthenticationContext.cs" />
+    <Compile Include="ConcurrentDictionary.cs" />
     <Compile Include="IWebUI.cs" />
     <Compile Include="IWebUIFactory.cs" />
     <Compile Include="PlatformSpecificHelper.cs" />
@@ -236,16 +234,8 @@
   <PropertyGroup Condition=" '$(TargetPlatformIdentifier)' == '' ">
     <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DelaySign>true</DelaySign>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\build\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
